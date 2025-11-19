@@ -12,5 +12,5 @@ RUN docker-php-ext-install pdo_mysql
 COPY . .
 WORKDIR /workdir/laravel_app
 RUN composer install
-CMD ["composer","install","&&","php", "artisan", "serve", "--host", "0.0.0.0"]
+CMD ["php", "artisan", "serve", "--host", "0.0.0.0"]
 EXPOSE 8000
