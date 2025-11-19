@@ -23,4 +23,10 @@ class TopController extends Controller
     {
         //
     }
+
+    // ツアー保存処理
+    public function tourStore(Request $request)
+    {
+        //
+    }
 }
