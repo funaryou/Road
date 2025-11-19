@@ -6,23 +6,39 @@ use Illuminate\Http\Request;
 
 class AutContoroller extends Controller
 {
-    // ユーザー登録
+    // ユーザー登録画面を返す
+    public function registerForm()
+    {
+        //
+    }
+
+    // ユーザー登録処理
     public function register(Request $request)
     {
+        //
     }
 
-    // ログイン
+    // ユーザー情報更新画面
+    public function updateForm()
+    {
+        //
+    }
+
+    // ユーザー情報更新処理
+    public function update(Request $request)
+    {
+        //
+    }
+
+    // ログイン画面
+    public function loginForm()
+    {
+        //
+    }
+
+    // ログイン処理
     public function login(Request $request)
     {
-    }
-
-    // ログアウト
-    public function logout(Request $request)
-    {
-    }
-
-    // プロフィール取得
-    public function profile(Request $request)
-    {
+        //
     }
 }
