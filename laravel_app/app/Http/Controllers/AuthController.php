@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AutContoroller extends Controller
+class AuthController extends Controller
 {
     // ユーザー登録画面を返す
     public function registerForm()
