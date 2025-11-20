@@ -9,6 +9,6 @@ class TopController extends Controller
     // トップページ
     public function top()
     {
-        //
+        return view('app.top.index');
     }
 }
