@@ -24,6 +24,15 @@ Route::prefix('auth')->group(function () {
 });
 
 
+Route::prefix('posts')->group(function () {
+    Route::get('/', [PostController::class, 'posts'])->name('post.index');
+});
+Route::prefix('post')->group(function () {
+    Route::get('/', [PostController::class, 'postForm'])->name('post.form');
+    Route::post('/', [PostController::class, 'postStore'])->name('post.store');
+});
+
+
 Route::middleware('auth')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -34,13 +43,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');
     });
 
-    Route::prefix('posts')->group(function () {
-        Route::get('/', [PostController::class, 'posts'])->name('post.index');
-    });
-    Route::prefix('post')->group(function () {
-        Route::get('/', [PostController::class, 'postFrom'])->name('post.form');
-        Route::post('/', [PostController::class, 'postStore'])->name('post.store');
-    });
 });
 
 

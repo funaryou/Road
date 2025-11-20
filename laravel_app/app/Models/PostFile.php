@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostFile extends Model
 {
-        protected $fillabe = [
+    protected $fillable = [
         'post_id',
         'file_path',
     ];
+
+    // 所属する投稿
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }
