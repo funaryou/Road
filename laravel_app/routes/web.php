@@ -6,6 +6,7 @@ use App\Http\Controllers\TopController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\PostController;
 
+Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');
