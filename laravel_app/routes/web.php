@@ -10,6 +10,11 @@ use App\Http\Controllers\PostController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::prefix('tour')->group(function () {
+    Route::get('/', [TourController::class, 'tourForm'])->name('tour.form');
+    Route::post('/', [TourController::class, 'tourStore'])->name('tour.store');
+    Route::get('/select', [TourController::class, 'tourSelect'])->name('tour.select');
+});
 
 Route::prefix('auth')->group(function () {
     Route::get('/register', [AuthController::class, 'registerForm'])->name('register.form');
@@ -28,11 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('top')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');
     });
-    Route::prefix('tour')->group(function () {
-        Route::get('/', [TourController::class, 'tourForm'])->name('tour.form');
-        Route::post('/', [TourController::class, 'tourStore'])->name('tour.store');
-        Route::get('/select', [TourController::class, 'tourSelect'])->name('tour.select');
-    });
+
     Route::prefix('posts')->group(function () {
         Route::get('/', [PostController::class, 'posts'])->name('post.index');
     });

@@ -46,4 +46,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    function tours(){
+        return $this->hasMany(Tour::class, 'company_id', 'id');
+    }
 }
