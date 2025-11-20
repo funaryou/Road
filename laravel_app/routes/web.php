@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TopController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\PostController;
@@ -41,3 +41,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PostController::class, 'postStore'])->name('post.store');
     });
 });
+
+
+
