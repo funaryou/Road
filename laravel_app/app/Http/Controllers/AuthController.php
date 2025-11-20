@@ -36,13 +36,13 @@ class AuthController extends Controller
     // ユーザー情報更新画面
     public function updateForm()
     {
-        
+        //
     }
 
     // ユーザー情報更新処理
     public function update(Request $request)
-    {
-        
+    {   
+        //
     }
 
     // ログイン画面
