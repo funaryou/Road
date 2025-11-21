@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 
 
@@ -38,13 +39,21 @@ class AuthController extends Controller
     // ユーザー情報更新画面
     public function updateForm()
     {
-        //
+        return view('app.auth.update');
     }
 
     // ユーザー情報更新処理
-    public function update(Request $request)
+    public function update(ProfileUpdateRequest $request)
     {   
-        //
+        $user = $request->user();
+        $user->name = $request->input("name") ?? $user->name;
+        $user->email = $request->input("email") ?? $user->email;
+        $user->phone_number = $request->input("phone_number") ?? $user->phone_number;
+        $user->icon = $request->file("icon") ? $request->file("icon")->store("icons", "public") : $user->icon;
+        $user->birthday = $request->input("birthday") ?? $user->birthday;
+        $user->gender = $request->input("gender") ?? $user->gender;
+        $user->save();
+        return redirect()->route('index');
     }
 
     // ログイン画面
