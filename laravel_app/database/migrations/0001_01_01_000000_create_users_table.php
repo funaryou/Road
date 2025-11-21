@@ -20,6 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->text('icon')->nullable();
+            $table->string('phone_number')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
