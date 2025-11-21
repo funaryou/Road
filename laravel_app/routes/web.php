@@ -6,7 +6,6 @@ use App\Http\Controllers\TopController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\PostController;
 
-Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,15 +24,13 @@ Route::prefix('auth')->group(function () {
 });
 
 
-Route::prefix('posts')->group(function () {
-    Route::get('/', [PostController::class, 'posts'])->name('post.index');
-});
-Route::prefix('post')->group(function () {
-    Route::get('/', [PostController::class, 'postForm'])->name('post.form');
-    Route::post('/', [PostController::class, 'postStore'])->name('post.store');
-});
-
-
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostController::class, 'posts'])->name('post.index');
+    });
+    Route::prefix('post')->group(function () {
+        Route::get('/from', [PostController::class, 'postForm'])->name('post.form');
+        Route::post('/', [PostController::class, 'postStore'])->name('post.store');
+    });
 Route::middleware('auth')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -44,6 +41,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');
     });
 
+    // 405 回避: 誤って GET でアクセスされた場合はトップへリダイレクト（POST でのログアウトはそのまま）
+    Route::get('/auth/logout', function () {
+        return redirect('/');
+    })->middleware('auth');
 });
 
 
