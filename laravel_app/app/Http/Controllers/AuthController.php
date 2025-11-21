@@ -39,7 +39,8 @@ class AuthController extends Controller
     // ユーザー情報更新画面
     public function updateForm()
     {
-        return view('app.auth.update');
+        $user = auth()->user();
+        return view('app.auth.update', compact('user'));    
     }
 
     // ユーザー情報更新処理

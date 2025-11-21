@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('post')->group(function () {
         Route::get('/from', [PostController::class, 'postForm'])->name('post.form');
         Route::post('/', [PostController::class, 'postStore'])->name('post.store');
+        Route::post('/like/{id}', [PostController::class, 'postLike'])->name('post.like');
+        Route::get('/show/{id}', [PostController::class, 'postShow'])->name('post.show');
     });
     Route::get('/auth/logout', function () {
         return redirect('/');

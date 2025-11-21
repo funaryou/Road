@@ -4,53 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\Company;
 use App\Models\PostFile;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\PostStoreRequest;
 
 class PostController extends Controller
 {
     public function postForm()
     {
-        // 投稿フォーム表示
-        $user = request()->user();
-        // 未ログイン時に company_id を選べるよう会社一覧を渡す
-        $companies = Company::all();
-        return view('post.form', [
-            'user' => $user,
-            'companies' => $companies,
-        ]);
+        return view('app.post.form');
     }
 
-    public function postStore(Request $request)
+    public function postStore(PostStoreRequest $request)
     {
-        // バリデーション
-        $validated = $request->validate([
-            'content' => 'required|string|max:1000',
-            'files.*' => 'required|file|max:10240',
-        ]);
 
         $user = $request->user();
-        $userId = $user ? $user->id : 0;
-
+        
         // 投稿作成
-        $post = Post::create([
-            'user_id' => $userId,
-            'content' => $validated['content'],
+        $post = $user->posts()->create([
+            'content' => $request->input('content'),
         ]);
-
+        
         // ファイルがあれば保存して PostFile を作成
         if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                if (!$file->isValid()) {
-                    continue;
-                }
-                $path = $file->store('posts', 'public');
-                PostFile::create([
+            $now = now();
+            $files = collect($request->file('files'))->map(function ($file) use ($post, $now) {
+                return [
                     'post_id' => $post->id,
-                    'file_path' => $path,
-                ]);
-            }
+                    'file_path' => $file->store('posts', 'public'),
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            })->toArray();
+
+            PostFile::insert($files);
         }
 
         return redirect()->route('post.index');
@@ -59,17 +45,28 @@ class PostController extends Controller
     public function posts()
     {
         $posts = Post::with(['user', 'files'])->orderBy('created_at', 'desc')->get();
-        return view('post.index', [
+        return view('app.post.index', [
             'posts' => $posts,
         ]);
     }
     
     public function postShow($id)
     {
-        $post = Post::with(['user', 'files'])->findOrFail($id);
-        return view('post.show', [
-            'post' => $post,
-        ]);
+        $post = Post::with(['user', 'files'])
+            ->withCount('likes')
+            ->findOrFail($id);
+        return view('app.post.show', ['post' => $post]);
+    }
+
+    public function postLike($id)
+    {
+        $post = Post::findOrFail($id);
+        if ($post->likes()->where('user_id', auth()->id())->exists()) {
+            $post->likes()->detach(auth()->id());
+        } else {
+            $post->likes()->attach(auth()->id());
+        }
+        return redirect()->back();
     }
     
 }
