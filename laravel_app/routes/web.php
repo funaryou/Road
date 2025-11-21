@@ -10,11 +10,13 @@ use App\Http\Controllers\PostController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::prefix('tour')->group(function () {
-    Route::get('/', [TourController::class, 'tourForm'])->name('tour.form');
-    Route::post('/', [TourController::class, 'tourStore'])->name('tour.store');
-    Route::get('/select', [TourController::class, 'tourSelect'])->name('tour.select');
+
+Route::get('/template', function () {
+    return view('app.template.index');
 });
+
+
+
 
 Route::prefix('auth')->group(function () {
     Route::get('/register', [AuthController::class, 'registerForm'])->name('register.form');
@@ -24,13 +26,7 @@ Route::prefix('auth')->group(function () {
 });
 
 
-    Route::prefix('posts')->group(function () {
-        Route::get('/', [PostController::class, 'posts'])->name('post.index');
-    });
-    Route::prefix('post')->group(function () {
-        Route::get('/from', [PostController::class, 'postForm'])->name('post.form');
-        Route::post('/', [PostController::class, 'postStore'])->name('post.store');
-    });
+
 Route::middleware('auth')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -41,7 +37,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');
     });
 
-    // 405 回避: 誤って GET でアクセスされた場合はトップへリダイレクト（POST でのログアウトはそのまま）
+    Route::prefix('tour')->group(function () {
+        Route::get('/', [TourController::class, 'tourForm'])->name('tour.form');
+        Route::post('/', [TourController::class, 'tourStore'])->name('tour.store');
+        Route::get('/select', [TourController::class, 'tourSelect'])->name('tour.select');
+    });
+
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostController::class, 'posts'])->name('post.index');
+    });
+    Route::prefix('post')->group(function () {
+        Route::get('/from', [PostController::class, 'postForm'])->name('post.form');
+        Route::post('/', [PostController::class, 'postStore'])->name('post.store');
+    });
     Route::get('/auth/logout', function () {
         return redirect('/');
     })->middleware('auth');
