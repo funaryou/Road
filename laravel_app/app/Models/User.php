@@ -24,6 +24,12 @@ class User extends Authenticatable
         'icon',
     ];
 
+    // ユーザーがいいねした投稿
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'likes')->withTimestamps();
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

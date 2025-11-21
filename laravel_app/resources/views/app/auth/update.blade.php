@@ -1,15 +1,15 @@
-<x-layout>
+<x-layout title=ProfileUpdate>
     <h1>Update</h1>
     <div>
         <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <input type="text" name="name" value="{{ Auth::user()->name }}">
-            <input type="email" name="email" value="{{ Auth::user()->email }}">
-            <input type="text" name="phone_number" value="{{ Auth::user()->phone_number }}">
+            <input type="text" name="name" value="{{ $user->name }}">
+            <input type="email" name="email" value="{{ $user->email }}">
+            <input type="text" name="phone_number" value="{{ $user->phone_number }}">
             <input type="file" name="icon">
-            <label for="icon"><img src="{{ asset('storage/' . Auth::user()->icon) }}" alt="icon"></label>
-            <input type="date" name="birthday" value="{{ Auth::user()->birthday }}">
+            <label for="icon"><img src="{{ asset('storage/' . $user->icon) }}" alt="icon"></label>
+            <input type="date" name="birthday" value="{{ $user->birthday }}">
             <select name="gender">
                 <option value="male">Male</option>
                 <option value="female">Female</option>

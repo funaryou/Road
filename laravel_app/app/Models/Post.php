@@ -22,4 +22,10 @@ class Post extends Model
     {
         return $this->hasMany(PostFile::class);
     }
+
+    // 投稿に紐づくいいね
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+    }
 }
