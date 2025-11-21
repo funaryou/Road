@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-            public function postForm()
+    public function postForm()
     {
         // 投稿フォーム表示
         $user = request()->user();
@@ -22,12 +22,12 @@ class PostController extends Controller
         ]);
     }
 
-        public function postStore(Request $request)
+    public function postStore(Request $request)
     {
         // バリデーション
         $validated = $request->validate([
             'content' => 'required|string|max:1000',
-            'files.*' => 'nullable|file|max:10240',
+            'files.*' => 'required|file|max:10240',
         ]);
 
         $user = $request->user();
@@ -56,11 +56,20 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-        public function posts()
+    public function posts()
     {
         $posts = Post::with(['user', 'files'])->orderBy('created_at', 'desc')->get();
         return view('post.index', [
             'posts' => $posts,
         ]);
     }
+    
+    public function postShow($id)
+    {
+        $post = Post::with(['user', 'files'])->findOrFail($id);
+        return view('post.show', [
+            'post' => $post,
+        ]);
+    }
+    
 }

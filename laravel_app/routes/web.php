@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TopController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\PostController;
-
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/update', [AuthController::class, 'updateForm'])->name('profile.edit');
         Route::put('/update', [AuthController::class, 'update'])->name('profile.update');
+    });
+    Route::prefix('profile')->group(function () {
+        Route::get('/{id}', [ProfileController::class, 'profile'])->name('profile');
     });
     Route::prefix('top')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');

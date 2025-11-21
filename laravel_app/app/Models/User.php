@@ -50,4 +50,7 @@ class User extends Authenticatable
     function tours(){
         return $this->hasMany(Tour::class, 'company_id', 'id');
     }
+    function posts(){
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
 }
