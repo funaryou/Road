@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
@@ -60,5 +62,16 @@ class AuthController extends Controller
         }
         
         return redirect()->route('login')->with('error', 'メールアドレスまたはパスワードが正しくありません。');
+    }
+
+    // ログアウト処理
+    public function logout(Request $request)
+    {
+        Auth::logout(); // ユーザーをログアウト
+
+        $request->session()->invalidate(); // セッションを無効化
+        $request->session()->regenerateToken(); // CSRFトークンを再生成
+
+        return redirect('/'); // ログアウト後にトップページへリダイレクト
     }
 }
