@@ -28,4 +28,9 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();
     }
+    // 投稿に紐づくコメント
+    public function comments()
+    {
+        return $this->hasMany(comment::class);
+    }
 }
