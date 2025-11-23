@@ -13,5 +13,22 @@
             @csrf
             <button type="submit">いいね</button>
         </form>
+        <form action="{{ route('post.comment.store', $post->id) }}" method="POST">
+            @csrf
+            <input type="text" name="content">
+            <button type="submit">コメント</button>
+            @error('content')
+                <div>{{ $message }}</div>
+            @enderror
+        </form>
+    </div>
+    <div>
+        @foreach($post->comments as $comment)
+            <div>
+                <img src="{{ asset('storage/' . $comment->user->icon) }}" alt="">
+                <div>{{ $comment->user->name }}</div>
+                <div>{{ $comment->content }}</div>
+            </div>
+        @endforeach
     </div>
 </x-layout>

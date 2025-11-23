@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\PostFile;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostCommentStoreRequest;
 
 class PostController extends Controller
 {
@@ -52,10 +53,20 @@ class PostController extends Controller
     
     public function postShow($id)
     {
-        $post = Post::with(['user', 'files'])
+        $post = Post::with(['user', 'files','comments', 'comments.user'])
             ->withCount('likes')
             ->findOrFail($id);
         return view('app.post.show', ['post' => $post]);
+    }
+    public function postCommentStore(PostCommentStoreRequest $request, $id)
+    {
+        $user = $request->user();
+        $post = Post::findOrFail($id);
+        $post->comments()->create([
+            'user_id' => $user->id,
+            'content' => $request->input('content'),
+        ]);
+        return redirect()->back();
     }
 
     public function postLike($id)
