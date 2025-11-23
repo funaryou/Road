@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TourController::class, 'tourForm'])->name('tour.form');
         Route::post('/', [TourController::class, 'tourStore'])->name('tour.store');
         Route::get('/select', [TourController::class, 'tourSelect'])->name('tour.select');
+        Route::get('/{id}', [TourController::class, 'addWaypointForm'])->name('waypoint.form');
+        Route::post('/{id}', [TourController::class, 'addWaypoint'])->name('waypoint.store');
+        Route::get('/show/{id}', [TourController::class, 'showTour'])->name('tour.show');
     });
 
     Route::prefix('posts')->group(function () {

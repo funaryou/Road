@@ -8,8 +8,19 @@ class Tour extends Model
 {
     //
     protected $fillable = [
-        'company_id',
+        'user_id',
         'name',
-        'content',
+        'days',
+        'place',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function waypoints()
+    {
+        return $this->hasMany(Waypoint::class);
+    }
 }

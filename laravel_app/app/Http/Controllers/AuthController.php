@@ -24,7 +24,11 @@ class AuthController extends Controller
     {
         $password = $request->input("password");
         $password = Hash::make($password);
-        $iconPath = $request->file("icon")->store("icons", "public");
+        if ($request->hasFile("icon")) {
+            $iconPath = $request->file("icon")->store("icons", "public");
+        } else {
+            $iconPath = null;
+        }
         $user = User::create([
             "name" => $request->input("name"),
             "phone_number" => $request->input("phone_number"),

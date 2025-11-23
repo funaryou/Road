@@ -25,5 +25,6 @@
                 </ul>
             </div>
         @endif
+        <a href="{{ route('register.form') }}">新規登録</a>
     </div>
 </x-layout>

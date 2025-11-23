@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('waypoints', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('tour_id');
             $table->string('name');
+            $table->unsignedTinyInteger('day_number');
+            $table->string('google_place_id')->nullable();
+            $table->text('image_url')->nullable();
+            $table->decimal('rating', 3, 1)->nullable();
             $table->decimal('lat', 9, 6); // 緯度
             $table->decimal('lng', 9, 6); // 経度
+            $table->timestamps();
         });
     }
 
