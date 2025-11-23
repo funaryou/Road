@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger("user_id");
             $table->text("content");
+            $table->timestamps();
 
         });
     }

@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout title="ShowProfile">
     <div>
         <h1>Profile</h1>
         <p>{{ $user->name }}</p>

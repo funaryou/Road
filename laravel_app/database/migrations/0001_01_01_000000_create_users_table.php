@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->date('birthday')->nullable();
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->boolean('is_company')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -23,4 +23,5 @@
             </div>
         @endif
     </div>
+    <a href="{{ route('login.form') }}">ログイン</a>
 </x-layout>

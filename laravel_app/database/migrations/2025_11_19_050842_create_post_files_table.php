@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('post_files', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->unsignedBigInteger('post_id');
             $table->text('file_path');
-
+            $table->timestamps();
         });
     }
 

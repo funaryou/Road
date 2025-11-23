@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'icon',
+        'is_company',
     ];
 
     // ユーザーがいいねした投稿
@@ -54,7 +55,7 @@ class User extends Authenticatable
     }
 
     function tours(){
-        return $this->hasMany(Tour::class, 'company_id', 'id');
+        return $this->hasMany(Tour::class, 'user_id', 'id');
     }
     function posts(){
         return $this->hasMany(Post::class, 'user_id', 'id');

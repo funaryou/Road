@@ -3,75 +3,86 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tour;
+use App\Http\Requests\TourStoreRequest;
 
 class TourController extends Controller
 {
-    // 一覧表示
-    function select() {
-        $tours = \App\Models\Tour::all();
-        return view("tour.select", ["tours" => $tours]);
-    }
-
-    /**
-     * ツアー作成フォームを表示する
-     */
     public function tourForm()
     {
-        return view('tour.form');
+        return view('app.tour.form');
     }
 
-    // ルートが期待するメソッド名に合わせたラッパー
     public function tourSelect()
     {
-        return $this->select();
+        $user = auth()->user();
+        $tours = Tour::where('user_id', $user->id)
+            ->orWhereHas('user', function ($query) {
+                $query->where('is_company', true);
+            })
+            ->get();
+        $tours = $tours->map(function ($tour) {
+            $tour->waypointsCount = $tour->waypoints()->count();
+            return $tour;
+        });
+        $tours = $tours->map(function ($tour) {
+            $tour->topImage = $tour->waypoints()->latest()->first()->image_url;
+            return $tour;
+        });
+        return view("app.tour.index", ["tours" => $tours]);
     }
-
-    public function tourStore(Request $request)
+    
+    public function showTour($id)
     {
-        return $this->store($request);
+        $tour = Tour::with('waypoints')->find($id);
+        return view("app.tour.show", ["tour" => $tour]);
     }
 
-    // 保存処理
-    function store(Request $request) {
-
-        // 入力値を取得
-        $title = $request["title"];
-        $content = $request["content"];
-
-        // ログインユーザー取得
+    public function tourStore(TourStoreRequest $request)
+    {
         $user = request()->user();
+        $name = $request->input("title");
+        $days = $request->input("days");
+        $place = $request->input("place");
+        $destination = $request->input("destination");
+        
+        $tour = $user->tours()->create([
+            "name" => $name,
+            "days" => $days,
+            "place" => $place,
+            "destination" => $destination,
+        ]);
+        return redirect()->route("waypoint.form", ["id" => $tour->id]);
+    }
+    public function addWaypointForm($id)
+    {
+        $tour = Tour::find($id);
+        return view("app.tour.waypoint.form", ["tour" => $tour]);
+    }   
+    public function addWaypoint(Request $request, $id)
+    {
+        $tour = Tour::find($id);
+        
+        $waypointsData = json_decode($request->input('waypoints_json', '[]'), true);
+        
+        $dayNumber = $request->input('days', 1);
+        
+        $waypointsToCreate = collect($waypointsData)->map(function ($data) use ($dayNumber) {
+            return [
+                "name" => $data['name'],
+                "day_number" => $dayNumber,
+                "lat" => $data['lat'],
+                "lng" => $data['lng'],
+                "google_place_id" => $data['google_place_id'] ?? null,
+                "image_url" => $data['image_url'] ?? null,
+                "rating" => $data['rating'] ?? null,
+            ];
+        })->all();
 
-        // tours に保存
-        if ($user) {
-            // ユーザーのリレーションが正しく設定されている場合はそれを使う
-            try {
-                $user->tours()->create([
-                    // migrations のカラム名に合わせて name を使う
-                    "name" => $title,
-                    "content" => $content
-                ]);
-            } catch (\Throwable $e) {
-                // リレーションに問題がある場合は直接作成
-                \App\Models\Tour::create([
-                    "company_id" => $user->id,
-                    "name" => $title,
-                    "content" => $content
-                ]);
-            }
-        } else {
-            // 未認証なら company_id をリクエストから受け取る
-            $companyId = $request->input('company_id');
-            if (!$companyId) {
-                return redirect()->back()->with('error', 'company_id が未指定です。ログインしている場合は再度お試しください。');
-            }
-            \App\Models\Tour::create([
-                "company_id" => $companyId,
-                "name" => $title,
-                "content" => $content
-            ]);
+        if (!empty($waypointsToCreate)) {
+            $tour->waypoints()->createMany($waypointsToCreate);
         }
 
-        // 一覧にリダイレクト
-        return redirect()->route("tour.select");
+        return redirect()->route("waypoint.form", ["id" => $tour->id]);
     }
 }

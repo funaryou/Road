@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('tours', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('name')->nullable()->default("Travel schedule");
+            $table->unsignedTinyInteger(column: 'days')->nullable();
+            $table->string('place')->nullable();
+            $table->string('destination')->nullable();
             $table->timestamps();
-            $table->unsignedBigInteger('company_id');
-            $table->string('name');
-            $table->text('content');
         });
     }
 

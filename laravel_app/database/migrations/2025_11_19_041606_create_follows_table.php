@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('follows', function (Blueprint $table) {
-            $table->timestamps();
             $table->unsignedBigInteger("follower_id");
             $table->unsignedBigInteger("followed_id");
 
             // ★ 複合主キーを設定
-        $table->primary(['follower_id', 'followed_id']);
+            $table->primary(['follower_id', 'followed_id']);
+            $table->timestamps();
         });
     }
 
