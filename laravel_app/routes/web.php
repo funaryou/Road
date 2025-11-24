@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('top')->group(function () {
         Route::get('/', [TopController::class, 'top'])->name('index');
+        Route::post('/like', [TopController::class, 'likePlace'])->name('place.like');
     });
 
     Route::prefix('tour')->group(function () {

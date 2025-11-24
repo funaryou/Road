@@ -1,18 +1,19 @@
 <x-layout title="Register">
-    <div>
-        <!-- アカウント登録フォーム -->
+    <x-auth-layout>
+    <div class="absolute bottom-0 w-full h-auto py-6 px-8 bg-white rounded-t-[40px]">
         <form action="{{ route('register.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="text" name="name" placeholder="名前">
-            <input type="email" name="email" placeholder="メールアドレス">
-            <input type="text" name="phone_number" placeholder="電話番号">
-            <input type="file" name="icon" placeholder="アイコン">
-            <input type="password" name="password" placeholder="パスワード">
-            <input type="password" name="password_confirmation" placeholder="パスワード（確認用）">
-            <button type="submit">登録</button>
+            <div class="flex flex-col items-center justify-center gap-6">
+                <p class="text-2xl font-bold">Sign up</p>
+                <x-input type="text" name="name" placeholder="username" />
+                <x-input type="email" name="email" placeholder="email" />
+                <x-input type="text" name="phone_number" placeholder="tel" />
+                <x-input type="file" name="icon" placeholder="icon" class="bg-gray-200 border-none" />
+                <x-input type="password" name="password" placeholder="passward" />
+                <x-input type="password" name="password_confirmation" placeholder="passward confirmation" />
+                <button class="w-60 h-auto p-2 bg-[#024887] rounded-lg text-xl text-white font-bold" type="submit">sign up</button>
+            </div>
         </form>
-
-        <!-- エラーメッセージ -->
         @if ($errors->any())
             <div class="text-red-500">
                 <ul>
@@ -23,5 +24,5 @@
             </div>
         @endif
     </div>
-    <a href="{{ route('login.form') }}">ログイン</a>
+    </x-auth-layout>
 </x-layout>

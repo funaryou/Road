@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tour;
+use App\Models\Place;
 use App\Http\Requests\TourStoreRequest;
 
 class TourController extends Controller
@@ -26,7 +27,8 @@ class TourController extends Controller
             return $tour;
         });
         $tours = $tours->map(function ($tour) {
-            $tour->topImage = $tour->waypoints()->latest()->first()->image_url;
+            $latestWaypoint = $tour->waypoints()->with('place')->latest()->first();
+            $tour->topImage = $latestWaypoint && $latestWaypoint->place ? $latestWaypoint->place->image_url : null;
             return $tour;
         });
         return view("app.tour.index", ["tours" => $tours]);
@@ -34,7 +36,7 @@ class TourController extends Controller
     
     public function showTour($id)
     {
-        $tour = Tour::with('waypoints')->find($id);
+        $tour = Tour::with('waypoints.place')->find($id);
         return view("app.tour.show", ["tour" => $tour]);
     }
 
@@ -52,11 +54,11 @@ class TourController extends Controller
             "place" => $place,
             "destination" => $destination,
         ]);
-        return redirect()->route("waypoint.form", ["id" => $tour->id]);
+        return redirect()->route("tour.show", ["id" => $tour->id]);
     }
     public function addWaypointForm($id)
     {
-        $tour = Tour::find($id);
+        $tour = Tour::findOrFail($id);
         return view("app.tour.waypoint.form", ["tour" => $tour]);
     }   
     public function addWaypoint(Request $request, $id)
@@ -67,22 +69,26 @@ class TourController extends Controller
         
         $dayNumber = $request->input('days', 1);
         
-        $waypointsToCreate = collect($waypointsData)->map(function ($data) use ($dayNumber) {
-            return [
-                "name" => $data['name'],
-                "day_number" => $dayNumber,
-                "lat" => $data['lat'],
-                "lng" => $data['lng'],
-                "google_place_id" => $data['google_place_id'] ?? null,
-                "image_url" => $data['image_url'] ?? null,
-                "rating" => $data['rating'] ?? null,
-            ];
-        })->all();
-
-        if (!empty($waypointsToCreate)) {
-            $tour->waypoints()->createMany($waypointsToCreate);
+        foreach ($waypointsData as $data) {
+            // Find or create place
+            $place = Place::firstOrCreate(
+                ['google_place_id' => $data['google_place_id']],
+                [
+                    'name' => $data['name'],
+                    'lat' => $data['lat'],
+                    'lng' => $data['lng'],
+                    'image_url' => $data['image_url'] ?? null,
+                    'rating' => $data['rating'] ?? null,
+                ]
+            );
+            
+            // Create waypoint with place_id
+            $tour->waypoints()->create([
+                'place_id' => $place->id,
+                'day_number' => $dayNumber,
+            ]);
         }
 
-        return redirect()->route("waypoint.form", ["id" => $tour->id]);
+        return redirect()->route("tour.show", ["id" => $tour->id, "day" => $dayNumber]);
     }
 }
