@@ -8,11 +8,17 @@ class Waypoint extends Model
 {
     protected $fillable = [
         'tour_id',
-        'name',
+        'place_id',
         'day_number',
-        'google_place_id',
-        'lat',
-        'lng',
-        'image_url',
     ];
+
+    public function tour()
+    {
+        return $this->belongsTo(Tour::class);
+    }
+
+    public function place()
+    {
+        return $this->belongsTo(Place::class);
+    }
 }

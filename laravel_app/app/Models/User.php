@@ -63,4 +63,22 @@ class User extends Authenticatable
     function comments(){
         return $this->hasMany(comment::class, 'user_id', 'id');
     }
+    // Posts that this user has liked
+    function likes(){
+        return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id')->withTimestamps();
+    }
+    function placeLikes(){
+        return $this->belongsToMany(Place::class, 'place_likes', 'user_id', 'place_id')->withTimestamps();
+    }
+    
+    // Users that this user is following
+    function following(){
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id')->withTimestamps();
+    }
+    
+    // Users that are following this user
+    function followers(){
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
 }

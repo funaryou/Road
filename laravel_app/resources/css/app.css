@@ -9,3 +9,25 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+html,
+body {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F2F7;
+    margin: 0;
+}
+
+.app-wrapper {
+    width: 100%;
+    max-width: 402px;
+    height: 100%;
+    max-height: 874px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
