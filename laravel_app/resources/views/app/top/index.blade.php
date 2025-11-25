@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <x-navigation active-page="home" />
+    <x-navigation active-page="map" />
 
     <style>
         .hide-scrollbar::-webkit-scrollbar {

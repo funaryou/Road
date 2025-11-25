@@ -2,7 +2,7 @@
     @if ($type === 'search-bar')
         <div>
             <div class="flex justify-between items-center w-full max-w-[400px] mx-auto p-2.5">
-                <span class="font-black text-2xl px-2.5">LOGO</span>
+                <span class="font-black text-2xl px-2.5">RaiGO</span>
             </div>
         </div>
 
