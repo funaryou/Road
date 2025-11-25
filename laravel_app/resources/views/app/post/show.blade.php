@@ -136,8 +136,6 @@
                 <button type="submit" class="text-[#024887] font-bold text-sm px-2">Post</button>
             </form>
             </div>
-        </div>
-
         <!-- Comments List -->
         @if($post->comments->isNotEmpty())
             <div class="px-5 mt-4 space-y-4">
@@ -152,6 +150,7 @@
                 @endforeach
             </div>
         @endif
+    </div>
 
         <x-navigation active-page="home" />
 </x-layout>
