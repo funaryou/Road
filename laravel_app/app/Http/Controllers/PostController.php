@@ -43,9 +43,21 @@ class PostController extends Controller
         return redirect()->route('post.index');
     }
 
-    public function posts()
+    public function posts(Request $request)
     {
-        $posts = Post::with(['user', 'files'])->orderBy('created_at', 'desc')->get();
+        $query = Post::with(['user', 'files'])->orderBy('created_at', 'desc');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('content', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($subQ) use ($search) {
+                      $subQ->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $posts = $query->get();
         return view('app.post.index', [
             'posts' => $posts,
         ]);

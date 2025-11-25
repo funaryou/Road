@@ -24,7 +24,7 @@ class PostStoreRequest extends FormRequest
         return [
             'content' => 'required|string|max:1000',
             'files' => 'required|array',
-            'files.*' => 'required|file|max:10240',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp,mp4,mov,avi,wmv|max:10240',
         ];
     }
     /**
@@ -35,12 +35,13 @@ class PostStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'content.required' => '投稿内容は必須です。',
-            'content.string' => '投稿内容は文字列で入力してください。',
-            'content.max' => '投稿内容は1000文字以内で入力してください。',
-            'files.*.required' => 'ファイルは必須です。',
-            'files.*.file' => '有効なファイルをアップロードしてください。',
-            'files.*.max' => 'ファイルサイズは10MBを超えてはいけません。',
+            'content.required' => 'Content is required.',
+            'content.string' => 'Content must be a string.',
+            'content.max' => 'Content must not exceed 1000 characters.',
+            'files.*.required' => 'File is required.',
+            'files.*.file' => 'Please upload a valid file.',
+            'files.*.mimes' => 'The file must be a file of type: jpeg, png, jpg, gif, svg, webp, mp4, mov, avi, wmv.',
+            'files.*.max' => 'File size must not exceed 10MB.',
         ];
     }
     

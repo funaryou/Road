@@ -31,9 +31,9 @@ class TourStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            "days.required" => "日数は必須です。",
-            "place.required" => "出発地は必須です。",
-            "destination.required" => "目的地は必須です。",
+            "days.required" => "Days is required.",
+            "place.required" => "Place is required.",
+            "destination.required" => "Destination is required.",
         ];
     }
 }

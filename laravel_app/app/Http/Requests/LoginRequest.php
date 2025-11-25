@@ -30,10 +30,10 @@ class LoginRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'メールアドレスは必須です。',
-            'email.email' => 'メールアドレスの形式で入力してください。',
-            'password.required' => 'パスワードは必須です。',
-            'password.min' => 'パスワードは8文字以上で入力してください。',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters.',
         ];
     }
 }

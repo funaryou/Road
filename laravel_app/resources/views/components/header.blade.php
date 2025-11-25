@@ -6,10 +6,12 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-[10px] mx-5 mb-2.5 p-2.5 flex items-center">
-            <img src="{{ asset('assets/images/search.svg') }}" class="w-4 mx-2.5" alt="glass">
-            <input type="text" placeholder="What do you look for?" class="border-none outline-none flex-grow text-xs font-bold text-black">
-        </div>
+        <form action="{{ route('post.index') }}" method="GET" class="bg-white rounded-[10px] mx-5 mb-2.5 p-2.5 flex items-center">
+            <button type="submit" class="bg-transparent border-none p-0 cursor-pointer">
+                <img src="{{ asset('assets/images/search.svg') }}" class="w-4 mx-2.5" alt="glass">
+            </button>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="What do you look for?" class="border-none outline-none flex-grow text-xs font-bold text-black">
+        </form>
     @elseif ($type === 'search-bar-and-back')
         <div>
             <div class="flex items-center mx-5 my-2.5">

@@ -28,7 +28,7 @@ class PostCommentStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'content.required' => 'コメントを入力してください。',
+            'content.required' => 'Please enter a comment.',
         ];
     }
 }

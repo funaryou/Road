@@ -35,11 +35,11 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
 
-            'icon.image' => 'アイコンは画像ファイルである必要があります。',
-            'icon.mimes' => 'アイコンはjpeg, png, jpg, gif形式の画像ファイルである必要があります。',
-            'icon.max' => 'アイコンは10MB以下の画像ファイルである必要があります。',
-            'birthday.date' => '誕生日は有効な日付である必要があります。',
-            'gender.in' => '性別はmale, female, otherのいずれかである必要があります。',
+            'icon.image' => 'Icon must be an image file.',
+            'icon.mimes' => 'Icon must be a file of type: jpeg, png, jpg, gif.',
+            'icon.max' => 'Icon must not exceed 10MB.',
+            'birthday.date' => 'Birthday must be a valid date.',
+            'gender.in' => 'Gender must be one of: male, female, other.',
         ];
     }
 }
